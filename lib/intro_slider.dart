@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'dot_animation_enum.dart';
+import 'dots_position_enum.dart';
 import 'list_rtl_language.dart';
 import 'scrollbar_behavior_enum.dart';
 import 'slide_object.dart';
@@ -79,6 +80,9 @@ class IntroSlider extends StatefulWidget {
   /// Show or hide dot indicator
   final bool? showDotIndicator;
 
+  /// Show at the bottom or after the content
+  final dotsPlacement? dotsPosition;
+
   /// Color for dot when passive
   final Color? colorDot;
 
@@ -150,6 +154,7 @@ class IntroSlider extends StatefulWidget {
     this.showDotIndicator,
     this.sizeDot,
     this.typeDotAnimation,
+    this.dotsPosition,
 
     // Tabs
     this.listCustomTabs,
@@ -234,6 +239,9 @@ class IntroSliderState extends State<IntroSlider>
   // ---------- Dot indicator ----------
   /// Show or hide dot indicator
   late final bool showDotIndicator;
+
+  /// Dots indicator placement
+  late final dotsPlacement dotsPosition;
 
   /// Color for dot when passive
   late final Color colorDot;
@@ -333,6 +341,8 @@ class IntroSliderState extends State<IntroSlider>
           }
         }
     }
+
+    dotsPosition = widget.dotsPosition ?? dotsPlacement.BOTTOM;
 
     tabController.animation?.addListener(() {
       setState(() {
@@ -573,12 +583,8 @@ class IntroSliderState extends State<IntroSlider>
     );
   }
 
-  Widget renderBottom() {
-    return Positioned(
-      bottom: 10.0,
-      left: 10.0,
-      right: 10.0,
-      child: Row(
+  Widget _bottomIndicatorWidget() {
+    return Row(
         children: <Widget>[
           // Skip button
           Container(
@@ -641,8 +647,16 @@ class IntroSliderState extends State<IntroSlider>
                     : Container(),
           ),
         ],
-      ),
-    );
+      );
+  }
+
+  Widget renderBottom() {
+    return (dotsPosition == dotsPlacement.BOTTOM) ? Positioned(
+      bottom: 10.0,
+      left: 10.0,
+      right: 10.0,
+      child: _bottomIndicatorWidget(),
+    ): _bottomIndicatorWidget();
   }
 
   List<Widget>? renderListTabs() {
