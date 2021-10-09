@@ -656,7 +656,12 @@ class IntroSliderState extends State<IntroSlider>
       left: 10.0,
       right: 10.0,
       child: _bottomIndicatorWidget(),
-    ): _bottomIndicatorWidget();
+    ) : Positioned(
+        top: 500.0,
+        left: 0.0,
+        right: 0.0,
+        child: _bottomIndicatorWidget(),
+      );
   }
 
   List<Widget>? renderListTabs() {
